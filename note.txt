@@ -1,0 +1,6 @@
+You can use docker-compose up to create the images if they don't already exist,
+and then run the docker-compose.yml file to turn them into connected containers.
+
+docker-compose down stops the containers, and the -v flag removes the volumes.
+If you want to reboot the whole thing, docker-compose down -v and then remove
+all of the images by using 'docker rmi $(docker image ls)'
