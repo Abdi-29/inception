@@ -1,15 +1,63 @@
-version: "3"
+version: "3.8"
 
 services:
+
   mariadb:
+    build: requirements/mariadb
+    container_name: mariadb
     image: mariadb
-    restart: unless-stop
+    restart: unless-stopped
     ports:
       - '3306:3306'
+    env_file:
+      - .env
+    environment:
+      # MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE : "${MYSQL_DATABASE}"
+      MYSQL_USER : "${MYSQL_USER}"
+      MYSQL_PASSWORD : "${MYSQL_PASSWORD}"
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - lenetwork  
 
-    enviroment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE : ${$MYSQL_DATABASE}
-      MYSQL_USER : ${MYSQL_USER}
-      MYSQL_PASSWORD : ${MYSQL_PASSWORD}
+  nginx:
+    build: requirements/nginx
+    container_name: nginx
+    image: nginx
+    depends_on:
+      - wordpress
+    restart: unless-stopped
+    ports:
+      - '443:433'
+    volumes:
+      - wp:/var/www/html 
+    networks:
+      - lenetwork  
 
+  wordpress:
+    build: requirements/wordpress
+    container_name: wordpress
+    image: wordpress
+    depends_on:
+      - mariadb
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE : "${MYSQL_DATABASE}"
+      MYSQL_USER : "${MYSQL_USER}"
+      MYSQL_PASSWORD : "${MYSQL_PASSWORD}"
+      MYSQL_HOST : "${MYSQL_HOST}"
+    volumes:
+      - wp:/var/www/html
+    networks:
+      - lenetwork  
+
+volumes:
+  db:
+  wp:
+
+networks:
+  lenetwork:  
