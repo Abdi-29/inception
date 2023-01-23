@@ -7,19 +7,18 @@ services:
     container_name: mariadb
     image: mariadb
     restart: unless-stopped
-    ports:
-      - '3306:3306'
+    expose:
+      - 3306
     env_file:
       - .env
     environment:
-      # MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE : "${MYSQL_DATABASE}"
       MYSQL_USER : "${MYSQL_USER}"
       MYSQL_PASSWORD : "${MYSQL_PASSWORD}"
     volumes:
       - db:/var/lib/mysql
     networks:
-      - lenetwork  
+      - test  
 
   nginx:
     build: requirements/nginx
@@ -28,12 +27,14 @@ services:
     depends_on:
       - wordpress
     restart: unless-stopped
+    env_file:
+      - .env
     ports:
-      - '443:433'
+      - "443:443"
     volumes:
-      - wp:/var/www/html 
+      - wp:/var/www/html
     networks:
-      - lenetwork  
+      - test   
 
   wordpress:
     build: requirements/wordpress
@@ -44,8 +45,9 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    expose:
+      - 9000
     environment:
-      # MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE : "${MYSQL_DATABASE}"
       MYSQL_USER : "${MYSQL_USER}"
       MYSQL_PASSWORD : "${MYSQL_PASSWORD}"
@@ -53,11 +55,11 @@ services:
     volumes:
       - wp:/var/www/html
     networks:
-      - lenetwork  
+      - test 
 
 volumes:
   db:
   wp:
-
 networks:
-  lenetwork:  
+  test:
+    driver: bridge
