@@ -1,20 +1,11 @@
 <?php
-/** The name of the database for WordPress */
 define( 'DB_NAME', 'wordpress' );
 
-/** Database username */
 define( 'DB_USER', 'ab' );
-
-/** Database password */
 define( 'DB_PASSWORD', '12345' );
-
-/** Database hostname */
 define( 'DB_HOST', 'mariadb' );
 
-/** Database charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );
-
-/** The database collate type. Don't change this if in doubt. */
 define( 'DB_COLLATE', '' );
 
 /** generate key here: https://api.wordpress.org/secret-key/1.1/salt/ */
@@ -31,10 +22,8 @@ $table_prefix = 'wp_';
 
 define( 'WP_DEBUG', false );
 
-/** Absolute path to the WordPress directory. */
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', '/var/www/html/wordpress' );
 }
 
-/** Sets up WordPress vars and included files. */
 require_once ABSPATH . 'wp-settings.php';

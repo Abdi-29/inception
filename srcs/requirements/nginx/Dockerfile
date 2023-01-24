@@ -9,7 +9,6 @@ RUN openssl req -x509 -newkey rsa:2048 -nodes \
 
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY nginx.conf /var/www/html/
 
 EXPOSE 443
 

@@ -7,8 +7,6 @@ services:
     container_name: mariadb
     image: mariadb
     restart: unless-stopped
-    expose:
-      - 3306
     env_file:
       - .env
     environment:
@@ -16,7 +14,7 @@ services:
       MYSQL_USER : "${MYSQL_USER}"
       MYSQL_PASSWORD : "${MYSQL_PASSWORD}"
     volumes:
-      - db:/var/lib/mysql
+      - db:/var/lib/mysql/
     networks:
       - test  
 
@@ -45,8 +43,6 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    expose:
-      - 9000
     environment:
       MYSQL_DATABASE : "${MYSQL_DATABASE}"
       MYSQL_USER : "${MYSQL_USER}"
@@ -58,8 +54,18 @@ services:
       - test 
 
 volumes:
-  db:
-  wp:
+ wp:
+  driver: local #volume is located locally
+  driver_opts:
+   o: bind #binding the volume
+   type: none #setting the type of volume
+   device: /Users/abba/codam_project/inception/wordpress #setting the directory of volume
+ db:
+  driver: local #volume is located locally
+  driver_opts:
+    o: bind #binding the volume
+    type: none #setting the type of volume
+    device: /Users/abba/codam_project/inception/db #setting the directory of volume
 networks:
   test:
     driver: bridge
