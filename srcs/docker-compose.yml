@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.3"
 
 services:
 
@@ -59,13 +59,13 @@ volumes:
   driver_opts:
    o: bind #binding the volume
    type: none #setting the type of volume
-   device: /Users/abba/codam_project/inception/wordpress #setting the directory of volume
+   device: /home/abba/data #setting the directory of volume
  db:
   driver: local #volume is located locally
   driver_opts:
     o: bind #binding the volume
     type: none #setting the type of volume
-    device: /Users/abba/codam_project/inception/db #setting the directory of volume
+    device: /home/abba/data #setting the directory of volume
 networks:
   test:
     driver: bridge

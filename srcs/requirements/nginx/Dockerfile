@@ -8,7 +8,7 @@ RUN openssl req -x509 -newkey rsa:2048 -nodes \
     -keyout /etc/nginx/key.pem -subj "/C=/ST=/L=/O=/CN=${DOMAIN_NAME}"
 
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY conf/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 443
 
