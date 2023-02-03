@@ -1,20 +1,22 @@
-version: "3.3"
+version: "3.8"
 
 services:
 
   mariadb:
-    build: requirements/mariadb
+    build:
+      context: requirements/mariadb
+      args:
+        MYSQL_DATABASE : ${MYSQL_DATABASE}
+        MYSQL_USER : $MYSQL_USER
+        MYSQL_PASSWORD : $MYSQL_PASSWORD
+        # MYSQL_ROOT_PASSWORD : $MYSQL_ROOT_PASSWORD
     container_name: mariadb
     image: mariadb
     restart: unless-stopped
     env_file:
       - .env
-    environment:
-      MYSQL_DATABASE : "${MYSQL_DATABASE}"
-      MYSQL_USER : "${MYSQL_USER}"
-      MYSQL_PASSWORD : "${MYSQL_PASSWORD}"
     volumes:
-      - db:/var/lib/mysql/
+      - db:/var/lib/mysql 
     networks:
       - test  
 
@@ -35,7 +37,13 @@ services:
       - test   
 
   wordpress:
-    build: requirements/wordpress
+    build:
+      context: requirements/wordpress
+      args:
+        MYSQL_DATABASE : "${MYSQL_DATABASE}"
+        MYSQL_USER : "${MYSQL_USER}"
+        MYSQL_PASSWORD : "${MYSQL_PASSWORD}"
+        MYSQL_HOST : "${MYSQL_HOST}"
     container_name: wordpress
     image: wordpress
     depends_on:
@@ -43,11 +51,6 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    environment:
-      MYSQL_DATABASE : "${MYSQL_DATABASE}"
-      MYSQL_USER : "${MYSQL_USER}"
-      MYSQL_PASSWORD : "${MYSQL_PASSWORD}"
-      MYSQL_HOST : "${MYSQL_HOST}"
     volumes:
       - wp:/var/www/html
     networks:
@@ -57,15 +60,16 @@ volumes:
  wp:
   driver: local #volume is located locally
   driver_opts:
-   o: bind #binding the volume
-   type: none #setting the type of volume
-   device: /home/abba/data #setting the directory of volume
+    o: bind #binding the volume
+    type: none #setting the type of volume
+    device: ${HOME}/codam_project/inception/wp
+
  db:
   driver: local #volume is located locally
   driver_opts:
     o: bind #binding the volume
     type: none #setting the type of volume
-    device: /home/abba/data #setting the directory of volume
+    device: ${HOME}/codam_project/inception/db
 networks:
   test:
     driver: bridge

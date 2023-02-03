@@ -1,11 +1,10 @@
 echo starting..........................2222................
 cd /var/www/html
-wget wget http://wordpress.org/latest.tar.gz
+wget http://wordpress.org/latest.tar.gz
 tar xfz latest.tar.gz
 rm -f latest.tar.gz
-rm index.html
 
-chmod +x /usr/local/bin/wp
+# chmod +x /usr/local/bin/wp
 mkdir -p /var/www/html/wordpress
 touch /run/php/php7.3-fpm.pid;
 chown -R www-data:www-data /var/www/*;
