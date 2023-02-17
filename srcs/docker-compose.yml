@@ -9,7 +9,7 @@ services:
         MYSQL_DATABASE : ${MYSQL_DATABASE}
         MYSQL_USER : $MYSQL_USER
         MYSQL_PASSWORD : $MYSQL_PASSWORD
-        # MYSQL_ROOT_PASSWORD : $MYSQL_ROOT_PASSWORD
+        MYSQL_ROOT_PASSWORD : $MYSQL_ROOT_PASSWORD
     container_name: mariadb
     image: mariadb
     restart: unless-stopped
@@ -72,4 +72,5 @@ volumes:
     device: ${HOME}/codam_project/inception/db
 networks:
   test:
-    driver: bridge
+    name: test
+    external: false  

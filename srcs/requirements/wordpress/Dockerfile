@@ -14,10 +14,10 @@ ENV MYSQL_HOST=$MYSQL_HOST
 
 # installing php fastcgi (it reccomanded when running it with nginx)
 # php  -mysql will allow the wordpress to connect with mariadb
-RUN apt-get update -y && apt-get -y install php7.3 php-fpm php-mysql mariadb-client wget curl
+RUN apt-get update -y && apt-get -y install php7.3 php-fpm php-mysql mariadb-client wget curl sendmail
 RUN mkdir /run/php
-COPY ./conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
-COPY ./conf/wp-config.php /tmp/
-COPY tools/run.sh run.sh
-RUN chmod +x run.sh
-ENTRYPOINT ./run.sh && php-fpm7.3 -F
+COPY /conf/www.conf /etc/php/7.3/fpm/pool.d
+COPY /conf/wp-config.php /etc/wp-config.php
+COPY tools/run.sh /etc/run.sh
+RUN chmod +x /etc/run.sh
+ENTRYPOINT ["/bin/bash", "/etc/run.sh"]
